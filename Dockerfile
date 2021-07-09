@@ -1,7 +1,7 @@
 # Version JDK8
 
 FROM centos:7
-MAINTAINER Gaurav Agarwal, bharatmicrosystems@gmail.com
+MAINTAINER Flaviu Tusa, ftusa@shift7digital.com
 
 RUN yum install -y java-1.8.0-openjdk-devel wget git maven
 
@@ -11,8 +11,8 @@ RUN mkdir /opt/tomcat
 RUN useradd -s /bin/nologin -g tomcat -d /opt/tomcat tomcat
 
 # Download and install tomcat
-RUN wget https://apache.mirrors.nublue.co.uk/tomcat/tomcat-8/v8.5.54/bin/apache-tomcat-8.5.54.tar.gz
-RUN tar -zxvf apache-tomcat-8.5.54.tar.gz -C /opt/tomcat --strip-components=1
+RUN wget https://apache.mirrors.nublue.co.uk/tomcat/tomcat-8/v8.5.69/bin/apache-tomcat-8.5.69.tar.gz
+RUN tar -zxvf apache-tomcat-8.5.69.tar.gz -C /opt/tomcat --strip-components=1
 RUN chgrp -R tomcat /opt/tomcat/conf
 RUN chmod g+rwx /opt/tomcat/conf
 RUN chmod g+r /opt/tomcat/conf/*
