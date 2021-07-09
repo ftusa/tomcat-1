@@ -1,6 +1,6 @@
 steps:
 # Pull the existing image
- - name: 'gcr.io/cloud-builders/docker'
+ - name: 'gcr.io/becn-sandbox/tomcat'
    entrypoint: 'bash'
    args:
     - '-c'
@@ -10,7 +10,7 @@ steps:
  - name: 'gcr.io/cloud-builders/docker'
    args: [ 'build', '-t', 'gcr.io/becn-sandbox/tomcat', '--cache-from', 'gcr.io/becn-sandbox/tomcat', '.' ]
 # Push the docker image to container registry
- - name: 'gcr.io/cloud-builders/docker'
+ - name: 'gcr.io/becn-sandbox/tomcat'
    args: ["push", "gcr.io/becn-sandbox/tomcat"]
 # Deploy an image from Container Registry to Cloud Run
  - name: 'gcr.io/cloud-builders/gcloud'
