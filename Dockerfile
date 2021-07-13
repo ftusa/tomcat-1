@@ -7,10 +7,11 @@ RUN yum install -y java-1.8.0-openjdk-devel wget git maven
 
 # Create users and groups
 RUN mkdir -p /opt/cms
+RUN mkdir -p /opt/cms/tomcat
 RUN useradd -m -d /opt/cms cms
 
 # Download and install tomcat
-RUN cd /usr/local
+RUN cd /opt/cms/
 RUN wget https://apache.mirrors.nublue.co.uk/tomcat/tomcat-8/v8.5.69/bin/apache-tomcat-8.5.69.tar.gz
 RUN tar -zxvf apache-tomcat-8.5.69.tar.gz -C /opt/cms/tomcat --strip-components=1
 RUN chgrp -R cms /opt/cms/tomcat/conf
