@@ -6,6 +6,7 @@ MAINTAINER Flaviu Tusa, ftusa@shift7digital.com
 RUN yum install -y java-1.8.0-openjdk-devel wget git maven
 
 # Create users and groups
+RUN mkdir -p /opt/cms
 RUN useradd -m -d /opt/cms cms
 
 # Download and install tomcat
