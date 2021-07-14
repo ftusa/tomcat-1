@@ -25,19 +25,9 @@ RUN chmod g+r /opt/cms/tomcat/bin/*
 
 RUN rm -rf /opt/cms/tomcat/webapps/*
 RUN rm -rf /opt/cms/tomcat/shared/lib/*
-RUN cd /tmp && git clone https://github.com/daniel-rhoades/hippo-gogreen.git
-RUN cd /tmp/hippo-gogreen && mvn clean install
-RUN cp /tmp/hippo-gogreen/cms/target/cms.war /opt/cms/tomcat/webapps/cms.war
-RUN chmod 777 /opt/cms/tomcat/webapps/cms.war
-RUN cp /tmp/hippo-gogreen/site/target/site.war /opt/cms/tomcat/webapps/site.war
-RUN chmod 777 /opt/cms/tomcat/webapps/site.war
-RUN cp /tmp/hippo-gogreen/essentials/target/essentials.war /opt/cms/tomcat/webapps/essentials.war
-RUN chmod 777 /opt/cms/tomcat/webapps/essentials.war
-RUN cp /tmp/hippo-gogreen/repository/target/repository.war /opt/cms/tomcat/webapps/repository.war
-RUN chmod 777 /opt/cms/tomcat/webapps/repository.war
-RUN mkdir -p /opt/cms/tomcat/shared
-RUN mkdir -p /opt/cms/tomcat/shared/lib
-RUN rsync -av /tmp/hippo-gogreen/target/tomcat8x/shared/lib/ /opt/cms/tomcat/shared/lib/
+RUN cd /tmp && wget gs://sandbox-bucket-test/cms-upgrade_beaconhippo-14.5.0.1-SNAPSHOT-distribution.tar.gz
+RUN mv cms-upgrade_beaconhippo-14.5.0.1-SNAPSHOT-distribution.tar.gz /opt/cms/tomcat/
+RUN cd /opt/cms/tomcat/ && tar -xzf cms-upgrade_beaconhippo-14.5.0.1-SNAPSHOT-distribution.tar.gz webapps shared
 
 VOLUME /opt/cms/tomcat/webapps
 EXPOSE 8080
