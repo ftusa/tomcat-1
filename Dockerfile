@@ -25,7 +25,7 @@ RUN chmod g+r /opt/cms/tomcat/bin/*
 
 RUN rm -rf /opt/cms/tomcat/webapps/*
 RUN rm -rf /opt/cms/tomcat/shared/lib/*
-RUN cd /tmp && wget gs://sandbox-bucket-test/cms-upgrade_beaconhippo-14.5.0.1-SNAPSHOT-distribution.tar.gz
+RUN cd /tmp && wget https://storage.cloud.google.com/sandbox-bucket-test/cms-upgrade_beaconhippo-14.5.0.1-SNAPSHOT-distribution.tar.gz
 RUN mv cms-upgrade_beaconhippo-14.5.0.1-SNAPSHOT-distribution.tar.gz /opt/cms/tomcat/
 RUN cd /opt/cms/tomcat/ && tar -xzf cms-upgrade_beaconhippo-14.5.0.1-SNAPSHOT-distribution.tar.gz webapps shared
 
