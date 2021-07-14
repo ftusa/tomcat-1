@@ -35,6 +35,7 @@ RUN cp /tmp/hippo-gogreen/essentials/target/essentials.war /opt/cms/tomcat/webap
 RUN chmod 777 /opt/cms/tomcat/webapps/essentials.war
 RUN cp /tmp/hippo-gogreen/repository/target/repository.war /opt/cms/tomcat/webapps/repository.war
 RUN chmod 777 /opt/cms/tomcat/webapps/repository.war
+RUN cp -R /tmp/hippo-gogreen/target/tomcat8x/shared/lib/ /opt/cms/tomcat/shared/lib/
 
 VOLUME /opt/cms/tomcat/webapps
 EXPOSE 8080
