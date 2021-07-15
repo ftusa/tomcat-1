@@ -582,5 +582,4 @@ echo "/hst:hst/hst:configurations/myproject/hst:workspace/hst:channel/hst:channe
 
 chown cms:cms /opt/cms/tomcat/webapps/myproject/repository-data/site/src/main/resources/hcm-content/hst/configurations/myproject/channelinfo.yaml
 
-sudo -u cms mvn -Pcargo.run -Drepo.path=./storage
 
