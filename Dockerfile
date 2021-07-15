@@ -25,8 +25,11 @@ RUN chmod g+r /opt/cms/tomcat/bin/*
 
 RUN rm -rf /opt/cms/tomcat/webapps/*
 RUN rm -rf /opt/cms/tomcat/shared/lib/*
-RUN cd /opt/cms/tomcat/ && wget https://storage.cloud.google.com/sandbox-bucket-test/cms-upgrade_beaconhippo-14.5.0.1-SNAPSHOT-distribution.tar.gz
-RUN cd /opt/cms/tomcat/ && tar -xzf /opt/cms/tomcat/cms-upgrade_beaconhippo-14.5.0.1-SNAPSHOT-distribution.tar.gz webapps shared
+RUN cd /tmp && git clone https://source.developers.google.com/p/development-220514/r/beacon
+RUN cd beacon-hippo && mvn clean install
+RUN mvn -P dist 
+RUN cd /tmp/beacon-hippo/target && cp beaconhippo-0.0.1-SNAPSHOT-distribution.tar.gz /opt/cms/tomcat
+RUN cd /opt/cms/tomcat/ && tar -xzf /opt/cms/tomcat/beaconhippo-0.0.1-SNAPSHOT-distribution.tar.gz webapps shared
 
 VOLUME /opt/cms/tomcat/webapps
 EXPOSE 8080
