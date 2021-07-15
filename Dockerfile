@@ -25,7 +25,7 @@ RUN chmod g+r /opt/cms/tomcat/bin/*
 
 RUN rm -rf /opt/cms/tomcat/webapps/*
 RUN rm -rf /opt/cms/tomcat/shared/lib/*
-RUN cd /tmp && git clone https://source.developers.google.com/p/development-220514/r/beacon
+RUN cd /tmp && gcloud source repos clone beacon --project=development-220514
 RUN cd beacon-hippo && mvn clean install
 RUN mvn -P dist 
 RUN cd /tmp/beacon-hippo/target && cp beaconhippo-0.0.1-SNAPSHOT-distribution.tar.gz /opt/cms/tomcat
