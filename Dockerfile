@@ -8,7 +8,7 @@ ENV HIPPO_FOLDER brxm-brxm-14.5.0-1
 ENV HIPPO_URL https://github.com/bloomreach/brxm/archive/refs/tags/brxm-14.5.0-1.zip
 
 
-RUN yum install -y java-1.8.0-openjdk-devel wget git maven unzip
+RUN yum install -y java-1.8.0-openjdk-devel wget git maven unzip curl
 
 
 # Create users and groups
