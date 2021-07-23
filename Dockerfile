@@ -12,7 +12,6 @@ ENV HIPPO_URL https://storage.googleapis.com/sandbox-bucket-test/cms-upgrade_bea
 RUN mkdir -p /srv/hippo
 
 # Add Oracle Java Repositories
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y software-properties-common
 RUN DEBIAN_FRONTEND=noninteractive add-apt-repository ppa:webupd8team/java
 RUN DEBIAN_FRONTEND=noninteractive apt-get update
 
