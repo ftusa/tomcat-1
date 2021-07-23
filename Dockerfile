@@ -3,8 +3,13 @@
 FROM centos:7
 MAINTAINER Flaviu Tusa, ftusa@shift7digital.com
 
-RUN yum install -y java-1.8.0-openjdk-devel wget git maven
-RUN yum install -y unzip
+ENV HIPPO_FILE brxm-14.5.0-1.zip
+ENV HIPPO_FOLDER brxm-brxm-14.5.0-1
+ENV HIPPO_URL https://github.com/bloomreach/brxm/archive/refs/tags/brxm-14.5.0-1.zip
+
+
+RUN yum install -y java-1.8.0-openjdk-devel wget git maven unzip
+
 
 # Create users and groups
 RUN groupadd tomcat
@@ -28,12 +33,12 @@ RUN chmod g+rwx /opt/tomcat/bin
 RUN chmod g+r /opt/tomcat/bin/*
 
 RUN rm -rf /opt/tomcat/webapps/*
-RUN cd /tmp && wget https://github.com/bloomreach/brxm/archive/refs/tags/brxm-14.5.0-1.zip
-RUN unzip brxm-14.5.0-1.zip
+RUN cd /tmp && curl -L $HIPPO_URL -o $HIPPO_FILE
+RUN unzip $HIPPO_FILE
 COPY settings.xml /etc/maven/settings.xml
-RUN cd /tmp/brxm-brxm-14.5.0-1/spa-sdk/examples/xm && mvn clean install
-RUN cp /tmp/brxm-brxm-14.5.0-1/spa-sdk/examples/xm/cms/target/cms.war /opt/tomcat/webapps/cms.war
-RUN cp /tmp/brxm-brxm-14.5.0-1/spa-sdk/examples/xm/essentials/target/essentials.war /opt/tomcat/webapps/essentials.war
+RUN cd /tmp/HIPPO_FOLDER/spa-sdk/examples/xm && mvn clean install
+RUN cp /tmp/HIPPO_FOLDER/spa-sdk/examples/xm/cms/target/cms.war /opt/tomcat/webapps/cms.war
+RUN cp /tmp/HIPPO_FOLDER/spa-sdk/examples/xm/essentials/target/essentials.war /opt/tomcat/webapps/essentials.war
 RUN chmod 777 /opt/tomcat/webapps/cms.war
 RUN chmod 777 /opt/tomcat/webapps/essentials.war
 
