@@ -10,10 +10,6 @@ ENV HIPPO_URL https://storage.googleapis.com/sandbox-bucket-test/cms-upgrade_bea
 
 RUN apt-get update -y 
 
-# Approve license conditions for headless operation
-RUN echo debconf shared/accepted-oracle-license-v1-1 select true | sudo debconf-set-selections
-RUN echo debconf shared/accepted-oracle-license-v1-1 seen true | sudo debconf-set-selections
-
 # Install packages required to install Hippo CMS
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y java-1.8.0-openjdk-devel
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y curl
