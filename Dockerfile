@@ -1,34 +1,47 @@
-# Version JDK8
+# Generic Hippo Docker image
+FROM ubuntu:latest
+MAINTAINER Flaviu Tusa ftusa@shift7digital.com
 
-FROM centos:7
-MAINTAINER Flaviu Tusa, ftusa@shift7digital.com
+# Set environment variables
+ENV PATH /srv/hippo/bin:$PATH
+ENV HIPPO_FILE cms-upgrade_beaconhippo-14.5.0.1-SNAPSHOT-distribution.tar.gz
+ENV HIPPO_FOLDER cms-upgrade_beaconhippo-14.5.0.1-SNAPSHOT-distribution
+ENV HIPPO_URL https://storage.googleapis.com/sandbox-bucket-test/cms-upgrade_beaconhippo-14.5.0.1-SNAPSHOT-distribution.tar.gz
 
-RUN yum install -y java-1.8.0-openjdk-devel wget git maven
+# Create the work directory for Hippo
+RUN mkdir -p /srv/hippo
 
-# Create users and groups
-RUN mkdir -p /opt/cms
-RUN mkdir -p /opt/cms/tomcat
-RUN useradd -m -d /opt/cms cms
+# Add Oracle Java Repositories
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y software-properties-common
+RUN DEBIAN_FRONTEND=noninteractive add-apt-repository ppa:webupd8team/java
+RUN DEBIAN_FRONTEND=noninteractive apt-get update
 
-# Download and install tomcat
-RUN cd /opt/cms/
-RUN wget https://apache.mirrors.nublue.co.uk/tomcat/tomcat-8/v8.5.69/bin/apache-tomcat-8.5.69.tar.gz
-RUN tar -zxvf apache-tomcat-8.5.69.tar.gz -C /opt/cms/tomcat --strip-components=1
-RUN chgrp -R cms /opt/cms/tomcat/conf
-RUN chmod g+rwx /opt/cms/tomcat/conf
-RUN chmod g+r /opt/cms/tomcat/conf/*
-RUN chown -R cms /opt/cms/tomcat/logs/ /opt/cms/tomcat/temp/ /opt/cms/tomcat/webapps/ /opt/cms/tomcat/work/
-RUN chgrp -R cms /opt/cms/tomcat/bin
-RUN chgrp -R cms /opt/cms/tomcat/lib
-RUN chmod g+rwx /opt/cms/tomcat/bin
-RUN chmod g+r /opt/cms/tomcat/bin/*
+# Approve license conditions for headless operation
+RUN echo debconf shared/accepted-oracle-license-v1-1 select true | sudo debconf-set-selections
+RUN echo debconf shared/accepted-oracle-license-v1-1 seen true | sudo debconf-set-selections
 
-RUN rm -rf /opt/cms/tomcat/webapps/*
-RUN rm -rf /opt/cms/tomcat/shared/lib/*
-RUN cd /opt/cms/tomcat/ && wget https://storage.cloud.google.com/sandbox-bucket-test/cms-upgrade_beaconhippo-14.5.0.1-SNAPSHOT-distribution.tar.gz
-RUN cd /opt/cms/tomcat/ && tar -xf /opt/cms/tomcat/cms-upgrade_beaconhippo-14.5.0.1-SNAPSHOT-distribution.tar.gz webapps shared
+# Install packages required to install Hippo CMS
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y java-1.8.0-openjdk-devel
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y curl
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y dos2unix
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y unzip
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y wget 
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y git 
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y maven
 
-VOLUME /opt/cms/tomcat/webapps
+# Install Hippo CMS, retrieving the GoGreen demonstration from the $HIPPO_URL and putting it under $HIPPO_FOLDER
+RUN curl -L $HIPPO_URL -o $HIPPO_FILE
+RUN tar -xvf ENV HIPPO_FILE
+RUN mv /$HIPPO_FOLDER/tomcat/* /srv/hippo
+RUN chmod 700 /srv/hippo/* -R
+
+# Replace DOS line breaks on Apache Tomcat scripts, to properly load JAVA_OPTS
+RUN dos2unix /srv/hippo/bin/setenv.sh
+RUN dos2unix /srv/hippo/bin/catalina.sh
+
+# Expose ports
 EXPOSE 8080
-CMD ["/opt/cms/tomcat/bin/catalina.sh", "run"]
-#
+
+# Start Hippo
+WORKDIR /srv/hippo/
+CMD ["catalina.sh", "run"]
