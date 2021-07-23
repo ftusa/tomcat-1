@@ -11,7 +11,7 @@ ENV HIPPO_URL https://storage.googleapis.com/sandbox-bucket-test/xm-spa-example-
 RUN apt-get update -y 
 
 # Install packages required to install Hippo CMS
-RUN apt-get install -y java-1.8.0-openjdk-devel
+RUN apt-get install -y default-jre
 RUN apt-get install -y curl
 RUN apt-get install -y dos2unix
 RUN apt-get install -y unzip
