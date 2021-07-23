@@ -3,7 +3,8 @@
 FROM centos:7
 MAINTAINER Flaviu Tusa, ftusa@shift7digital.com
 
-RUN yum install -y java-1.8.0-openjdk-devel wget git maven unzip
+RUN yum install -y java-1.8.0-openjdk-devel wget git maven
+RUN yum install -y unzip
 
 # Create users and groups
 RUN groupadd tomcat
