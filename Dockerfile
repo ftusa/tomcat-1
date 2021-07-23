@@ -1,37 +1,41 @@
-# Generic Hippo Docker image
-FROM ubuntu:latest
-MAINTAINER Flaviu Tusa ftusa@shift7digital.com
+# Version JDK8
 
-# Set environment variables
-ENV PATH /srv/hippo/bin:$PATH
-ENV HIPPO_FILE xm-spa-example-14.5.0-distribution.tar.gz
-ENV HIPPO_FOLDER xm-spa-example-14.5.0-distribution
-ENV HIPPO_URL https://storage.googleapis.com/sandbox-bucket-test/xm-spa-example-14.5.0-distribution.tar.gz
+FROM centos:7
+MAINTAINER Flaviu Tusa, ftusa@shift7digital.com
 
-RUN apt-get update -y 
+RUN yum install -y java-1.8.0-openjdk-devel wget git maven unzip
 
-# Install packages required to install Hippo CMS
-RUN apt-get install -y default-jre
-RUN apt-get install -y curl
-RUN apt-get install -y dos2unix
-RUN apt-get install -y unzip
-RUN apt-get install -y wget 
-RUN apt-get install -y git 
-RUN apt-get install -y maven
+# Create users and groups
+RUN groupadd tomcat
+RUN mkdir /opt/tomcat
+RUN useradd -s /bin/nologin -g tomcat -d /opt/tomcat tomcat
 
-# Install Hippo CMS, retrieving the GoGreen demonstration from the $HIPPO_URL and putting it under $HIPPO_FOLDER
-RUN curl -L $HIPPO_URL -o $HIPPO_FILE
-RUN tar -xzvf ENV HIPPO_FILE
-RUN mv /$HIPPO_FOLDER/tomcat/* /srv/hippo
-RUN chmod 700 /srv/hippo/* -R
+# Download and install tomcat
+RUN wget https://apache.mirrors.nublue.co.uk/tomcat/tomcat-8/v8.5.69/bin/apache-tomcat-8.5.69.tar.gz
+RUN tar -zxvf apache-tomcat-8.5.69.tar.gz -C /opt/tomcat --strip-components=1
+#Add log4j2.xml
+RUN cd /opt/tomcat/conf
+RUN wget https://documentation.bloomreach.com/binaries/content/assets/connect/library/enterprise/jee-application-server-support/13.2/log4j2-dist.xml
+RUN mv log4j2-dist.xml log4j2.xml
+RUN chgrp -R tomcat /opt/tomcat/conf
+RUN chmod g+rwx /opt/tomcat/conf
+RUN chmod g+r /opt/tomcat/conf/*
+RUN chown -R tomcat /opt/tomcat/logs/ /opt/tomcat/temp/ /opt/tomcat/webapps/ /opt/tomcat/work/
+RUN chgrp -R tomcat /opt/tomcat/bin
+RUN chgrp -R tomcat /opt/tomcat/lib
+RUN chmod g+rwx /opt/tomcat/bin
+RUN chmod g+r /opt/tomcat/bin/*
 
-# Replace DOS line breaks on Apache Tomcat scripts, to properly load JAVA_OPTS
-RUN dos2unix /srv/hippo/bin/setenv.sh
-RUN dos2unix /srv/hippo/bin/catalina.sh
+RUN rm -rf /opt/tomcat/webapps/*
+RUN cd /tmp && wget https://github.com/bloomreach/brxm/archive/refs/tags/brxm-14.5.0-1.zip
+RUN unzip brxm-14.5.0-1.zip
+COPY settings.xml /etc/maven/settings.xml
+RUN cd /tmp/brxm-brxm-14.5.0-1/spa-sdk/examples/xm && mvn clean install
+RUN cp /tmp/brxm-brxm-14.5.0-1/spa-sdk/examples/xm/cms/target/cms.war /opt/tomcat/webapps/cms.war
+RUN cp /tmp/brxm-brxm-14.5.0-1/spa-sdk/examples/xm/essentials/target/essentials.war /opt/tomcat/webapps/essentials.war
+RUN chmod 777 /opt/tomcat/webapps/cms.war
+RUN chmod 777 /opt/tomcat/webapps/essentials.war
 
-# Expose ports
+VOLUME /opt/tomcat/webapps
 EXPOSE 8080
-
-# Start Hippo
-WORKDIR /srv/hippo/
-CMD ["catalina.sh", "run"]
+CMD ["/opt/tomcat/bin/catalina.sh", "run"]
