@@ -8,12 +8,7 @@ ENV HIPPO_FILE cms-upgrade_beaconhippo-14.5.0.1-SNAPSHOT-distribution.tar.gz
 ENV HIPPO_FOLDER cms-upgrade_beaconhippo-14.5.0.1-SNAPSHOT-distribution
 ENV HIPPO_URL https://storage.googleapis.com/sandbox-bucket-test/cms-upgrade_beaconhippo-14.5.0.1-SNAPSHOT-distribution.tar.gz
 
-# Create the work directory for Hippo
-RUN mkdir -p /srv/hippo
-
-# Add Oracle Java Repositories
-RUN DEBIAN_FRONTEND=noninteractive add-apt-repository ppa:webupd8team/java
-RUN DEBIAN_FRONTEND=noninteractive apt-get update
+RUN apt-get update -y 
 
 # Approve license conditions for headless operation
 RUN echo debconf shared/accepted-oracle-license-v1-1 select true | sudo debconf-set-selections
