@@ -21,7 +21,7 @@ RUN apt-get install -y maven
 
 # Install Hippo CMS, retrieving the GoGreen demonstration from the $HIPPO_URL and putting it under $HIPPO_FOLDER
 RUN curl -L $HIPPO_URL -o $HIPPO_FILE
-RUN tar -xvf ENV HIPPO_FILE
+RUN tar -xzvf ENV HIPPO_FILE
 RUN mv /$HIPPO_FOLDER/tomcat/* /srv/hippo
 RUN chmod 700 /srv/hippo/* -R
 
