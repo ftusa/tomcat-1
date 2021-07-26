@@ -2,9 +2,9 @@
 
 FROM ubuntu:20.04
 MAINTAINER Flaviu Tusa, ftusa@shift7digital.com
+ENV DEBIAN_FRONTEND=noninteractive
 
-RUN apt update
-RUN apt install -y default-jdk wget git maven unzip
+RUN DEBIAN_FRONTEND=noninteractive apt install -y default-jdk wget git maven unzip
 
 # Create users and groups
 RUN groupadd tomcat
