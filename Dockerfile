@@ -1,11 +1,10 @@
 # Version JDK11
 
-FROM ubuntu:latest
+FROM ubuntu:20.04
 MAINTAINER Flaviu Tusa, ftusa@shift7digital.com
 
 RUN apt update
-RUN apt install -y default-jre wget git maven unzip
-RUN apt install -y default-jdk
+RUN apt install -y default-jdk wget git maven unzip
 
 # Create users and groups
 RUN groupadd tomcat
