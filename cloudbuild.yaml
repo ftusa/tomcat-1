@@ -17,4 +17,5 @@ steps:
    args: ['beta', 'run', 'deploy', 'tomcat', '--image', 'gcr.io/becn-sandbox/tomcat:latest', '--region', 'europe-west1', '--platform', 'managed', '--allow-unauthenticated']
 images:
  - 'gcr.io/becn-sandbox/tomcat'
+ timeout: 660s
 
