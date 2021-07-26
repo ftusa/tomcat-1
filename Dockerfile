@@ -25,8 +25,8 @@ RUN chmod g+rwx /opt/tomcat/bin
 RUN chmod g+r /opt/tomcat/bin/*
 
 RUN rm -rf /opt/tomcat/webapps/*
-COPY wget.sh /tmp
-RUN cd /tmp && chmod +x wget.sh
+COPY wget.sh /
+RUN chmod +x /wget.sh
 RUN ./wget.sh
 COPY settings.xml /etc/maven/settings.xml
 RUN cd /tmp/brxm-brxm-14.5.0-1/spa-sdk/examples/xm && mvn clean install
