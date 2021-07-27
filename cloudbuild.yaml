@@ -6,7 +6,6 @@ steps:
     - '-c'
     - |
       docker pull gcr.io/becn-sandbox/tomcat:latest || exit 0
-      timeout: 660s
 # Build a docker image
  - name: 'gcr.io/cloud-builders/docker'
    args: [ 'build', '-t', 'gcr.io/becn-sandbox/tomcat', '--cache-from', 'gcr.io/becn-sandbox/tomcat', '.' ]
