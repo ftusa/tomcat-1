@@ -29,7 +29,6 @@ COPY wget.sh /
 RUN chmod +x /wget.sh
 RUN ./wget.sh
 COPY settings.xml /etc/maven/settings.xml
-RUN cd /tmp/brxm-brxm-14.5.0-1/spa-sdk/examples/xm && mvn clean install
 RUN cp /tmp/brxm-brxm-14.5.0-1/spa-sdk/examples/xm/cms/target/cms.war /opt/tomcat/webapps/cms.war
 RUN cp /tmp/brxm-brxm-14.5.0-1/spa-sdk/examples/xm/essentials/target/essentials.war /opt/tomcat/webapps/essentials.war
 RUN cp /tmp/brxm-brxm-14.5.0-1/spa-sdk/examples/xm/site/webapp/target/site.war /opt/tomcat/webapps/site.war
