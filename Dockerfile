@@ -1,10 +1,11 @@
-# Version JDK11
+# Version JDK8
 
 FROM ubuntu:20.04
 MAINTAINER Flaviu Tusa, ftusa@shift7digital.com
 ARG DEBIAN_FRONTEND=noninteractive
 RUN DEBIAN_FRONTEND=noninteractive apt update
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y default-jdk wget git maven unzip
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y openjdk-8-jdk wget git maven unzip
+RUN update-alternatives --set java /usr/lib/jvm/jdk1.8.0_version/bin/java
 
 # Create users and groups
 RUN groupadd tomcat
@@ -29,7 +30,7 @@ COPY wget.sh /
 RUN chmod +x /wget.sh
 RUN ./wget.sh
 COPY settings.xml /etc/maven/settings.xml
-RUN cd /tmp/brxm-brxm-14.5.0-1/spa-sdk/examples/xm && mvn clean install
+RUN cd /tmp/brxm-brxm-14.5.0-1/spa-sdk/examples/xm && mvn clean install -U
 RUN cp /tmp/brxm-brxm-14.5.0-1/spa-sdk/examples/xm/cms/target/cms.war /opt/tomcat/webapps/cms.war
 RUN cp /tmp/brxm-brxm-14.5.0-1/spa-sdk/examples/xm/essentials/target/essentials.war /opt/tomcat/webapps/essentials.war
 RUN cp /tmp/brxm-brxm-14.5.0-1/spa-sdk/examples/xm/site/webapp/target/site.war /opt/tomcat/webapps/site.war
