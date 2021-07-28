@@ -5,7 +5,6 @@ MAINTAINER Flaviu Tusa, ftusa@shift7digital.com
 ARG DEBIAN_FRONTEND=noninteractive
 RUN DEBIAN_FRONTEND=noninteractive apt update
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y openjdk-8-jdk wget git maven unzip
-RUN update-alternatives --set java /usr/lib/jvm/jdk1.8.0_version/bin/java
 
 # Create users and groups
 RUN groupadd tomcat
